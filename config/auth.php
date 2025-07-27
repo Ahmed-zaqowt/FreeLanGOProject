@@ -41,12 +41,12 @@ return [
             'provider' => 'users',
         ],
 
-          'admin' => [
+        'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
         ],
 
-         'freelancer' => [
+        'freelancer' => [
             'driver' => 'session',
             'provider' => 'freelancers',
         ],
@@ -80,9 +80,9 @@ return [
             'model' => App\Models\Admin::class,
         ],
 
-          'freelancers' => [
+        'freelancers' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Freelacer::class,
+            'model' => App\Models\Freelancer::class,
         ],
 
         // 'users' => [
@@ -113,6 +113,20 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'freelancers' => [
+            'provider' => 'freelancers',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

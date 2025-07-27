@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ForgetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
-class Freelacer extends Authenticatable
+class Freelancer extends Authenticatable
 {
     use Notifiable;
     protected $guarded = [];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ForgetPasswordNotification($token, 'freelancer'));
+    }
 }

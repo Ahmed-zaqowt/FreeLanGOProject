@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::create([
+       /* \App\Models\User::create([
              'name' => 'Test User',
              'email' => 'user@example.com',
              'password' => Hash::make('123456789'),
@@ -25,10 +25,13 @@ class DatabaseSeeder extends Seeder
              'name' => 'Test Admin',
              'email' => 'admin@example.com',
              'password' => Hash::make('123456789'),
-         ]);
+         ]);*/
 
-         \App\Models\Freelacer::create([
-             'name' => 'Test Freelancer',
+         \App\Models\Freelancer::create([
+             'fullname' => 'Test Freelancer',
+             'username' => 'TestFreelancer',
+             'phone' => '0599166117',
+             'country' => 'gaza' ,
              'email' => 'freelancer@example.com',
              'password' => Hash::make('123456789'),
          ]);

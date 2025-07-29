@@ -1,1 +1,5 @@
-مرحبا ادمن اهليين !! 
+@extends('admin.master')
+
+@section('content')
+
+@stop

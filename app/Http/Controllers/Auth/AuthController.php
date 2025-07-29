@@ -47,7 +47,10 @@ class AuthController extends Controller
         $modelClass = config("auth.providers.$provider.model");
         $token = Str::random();
         $user = $modelClass::create([
-            'name' => $request->fullname,
+            'fullname' => $request->fullname,
+            'username' => $request->fullname,
+            'phone' => '059252525',
+            'country' => 'gaza',
             'email' => $request->email,
             'password' => $request->password,
             'verification_token' => $token,
@@ -64,8 +67,6 @@ class AuthController extends Controller
         $guard = $request->route('guard');
         return view($guard . '.dashboard');
     }
-
-
 
     public function indexForgetPassword(Request $request)
     {
@@ -90,7 +91,6 @@ class AuthController extends Controller
             : back()->withErrors(['email' => __($status)]);
     }
 
-
     public function showResetForm(Request $request, $token = null)
     {
         $guard = $request->route('guard');
@@ -99,15 +99,9 @@ class AuthController extends Controller
         return view('auth.reset-password', compact('guard', 'token', 'email'));
     }
 
-
-
     public function resetPassword(Request $request)
     {
-
-        // dd($request->all());
         $guard = $request->route('guard');
-
-
         $broker = $this->getPasswordBroker($guard);
 
         $status = Password::broker($broker)->reset(
@@ -123,7 +117,6 @@ class AuthController extends Controller
             : back()->withErrors(['email' => [__($status)]]);
     }
 
-    // Helper method لتحديد broker حسب guard
     protected function getPasswordBroker($guard)
     {
         return match ($guard) {

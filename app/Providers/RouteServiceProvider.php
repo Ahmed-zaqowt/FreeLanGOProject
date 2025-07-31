@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::prefix($prefix)->controller(AuthController::class)->name($name . '.')->group(function () use ($guard, $options) {
 
-                Route::middleware('guest:' . $guard)->group(function () use ($guard , $options) {
+                Route::middleware('guest:' . $guard)->group(function () use ($guard, $options) {
                     Route::get('login',  'indexLogin')->name('login')->defaults('guard', $guard);
                     Route::post('login',  'login')->name('login.submit')->defaults('guard', $guard);
 
@@ -60,9 +60,10 @@ class RouteServiceProvider extends ServiceProvider
                     Route::get('reset-password/{token}',  'showResetForm')->name('password.reset')->defaults('guard', $guard);
                     Route::post('reset-password', 'resetPassword')->name('password.update')->defaults('guard', $guard);
                 });
-
-
-                Route::get('dashboard', 'dashboard')->name('dashboard')->middleware(['verfied.guard:' . $guard, 'auth:' . $guard])->defaults('guard', $guard);
+                Route::middleware(['verfied.guard:' . $guard, 'authin:' . $guard])->group(function () use($guard) {
+                    Route::post('logout', 'logout')->name('logout')->defaults('guard', $guard);
+                    Route::get('dashboard', 'dashboard')->name('dashboard')->defaults('guard', $guard);
+                });
             });
         });
     }

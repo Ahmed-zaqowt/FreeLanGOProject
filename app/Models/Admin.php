@@ -16,4 +16,6 @@ class Admin extends Authenticatable
 
     protected $guard_name = 'admin';
 
+    
+
 }

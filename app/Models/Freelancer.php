@@ -12,7 +12,7 @@ class Freelancer extends Authenticatable
     use Notifiable , HasFactory;
     protected $guarded = [];
 
-    public function sendPasswordResetNotification($token)
+     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ForgetPasswordNotification($token, 'freelancer'));
     }

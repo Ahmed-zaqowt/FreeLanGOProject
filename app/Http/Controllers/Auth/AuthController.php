@@ -65,7 +65,7 @@ class AuthController extends Controller
     function dashboard(Request $request)
     {
         $guard = $request->route('guard');
-        return view($guard . '.dashboard');
+        return view($guard . '.dashboard' ,compact('guard'));
     }
 
     public function indexForgetPassword(Request $request)
@@ -79,7 +79,7 @@ class AuthController extends Controller
         $guard = $request->route('guard');
         $request->validate(['email' => 'required|email']);
 
-        // تعيين broker حسب الguard
+
         $broker = $this->getPasswordBroker($guard);
 
         $status = Password::broker($broker)->sendResetLink(
@@ -124,5 +124,12 @@ class AuthController extends Controller
             'freelancer' => 'freelancers',
             default => 'users',
         };
+    }
+
+
+    function logout(Request $request) {
+        $guard = $request->route('guard');
+        Auth::guard($guard)->logout();
+        return redirect()->route("$guard.login");
     }
 }

@@ -59,10 +59,9 @@ class DatabaseSeeder extends Seeder
         $editor->givePermissionTo(['users.view', 'users.update', 'users.delete']);
 */
         // give per to user
-      /*  $user = Admin::find(1);
-        $user->syncRoles('viewer');*/
-
-
+        $user = Admin::find(1);
+        $user->syncRoles('super');
+/*
       $models = ['User'] ;
       $actions = ['store' , 'view' , 'update' , 'delete'];
 
@@ -78,7 +77,7 @@ class DatabaseSeeder extends Seeder
             $super->givePermissionTo($permission);
         }
       }
-
+*/
 
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -26,6 +27,23 @@ Route::get('confirm', function () {
 
 // dashboard admin routes :
 Route::prefix('admin/')->name('admin.')->middleware('auth:admin')->group(function () {
+
+    Route::prefix('roles/')->controller(UserController::class)->name('user.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/getdata', 'getdata')->name('getdata');
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/delete', 'delete')->name('delete');
+    });
+
+     Route::prefix('admins/')->controller(AdminController::class)->name('admin.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/getdata', 'getdata')->name('getdata');
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/delete', 'delete')->name('delete');
+    });
+
     Route::prefix('users/')->controller(UserController::class)->name('user.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getdata', 'getdata')->name('getdata');

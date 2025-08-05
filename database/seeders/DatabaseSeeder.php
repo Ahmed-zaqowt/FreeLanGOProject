@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123456789'),
         ]);*/
 
-        /*\App\Models\Admin::create([
-             'name' => 'Test Admin',
-             'email' => 'admin@example.com',
-             'phone' => '0599166114',
+          \App\Models\Admin::create([
+             'name' => 'Test Admin 3',
+             'email' => 'admin3@example.com',
+             'phone' => '0599166113',
              'password' => Hash::make('123456789'),
-         ]);*/
+         ]);
 
         /* \App\Models\Freelancer::create([
              'fullname' => 'Test Freelancer',
@@ -59,8 +59,8 @@ class DatabaseSeeder extends Seeder
         $editor->givePermissionTo(['users.view', 'users.update', 'users.delete']);
 */
         // give per to user
-        $user = Admin::find(1);
-        $user->syncRoles('super');
+       /* $user = Admin::find(1);
+        $user->syncRoles('super');*/
 /*
       $models = ['User'] ;
       $actions = ['store' , 'view' , 'update' , 'delete'];
@@ -73,7 +73,6 @@ class DatabaseSeeder extends Seeder
                 'name' => $permName ,
                 'guard_name' => 'admin' ,
             ]);
-
             $super->givePermissionTo($permission);
         }
       }

@@ -9,6 +9,7 @@
     <link href="{{ asset('assets-dash/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets-dash/css/pages.css') }}" rel="stylesheet">
     <link href="{{ asset('assets-dash/css/responsive.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets-dash/css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -74,6 +75,7 @@
             </div>
         </div>
     </footer>
+    <script src="{{ asset('assets-dash/js/bootstrap.bundle.min.js') }}"></script>
    <script src="{{ asset('assets-dash/js/app.js') }}"></script>
 </body>
 </html>

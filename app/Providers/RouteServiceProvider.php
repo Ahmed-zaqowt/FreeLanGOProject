@@ -59,8 +59,14 @@ class RouteServiceProvider extends ServiceProvider
 
                     Route::get('reset-password/{token}',  'showResetForm')->name('password.reset')->defaults('guard', $guard);
                     Route::post('reset-password', 'resetPassword')->name('password.update')->defaults('guard', $guard);
+
+
+                    Route::get('/google', 'redirectToGoogle')
+                        ->name('google.login')->defaults('guard', $guard);
+
+                    Route::get('/google/callback', 'handleGoogleCallback')->defaults('guard', $guard);
                 });
-                Route::middleware(['verfied.guard:' . $guard, 'authin:' . $guard])->group(function () use($guard) {
+                Route::middleware(['verfied.guard:' . $guard, 'authin:' . $guard])->group(function () use ($guard) {
                     Route::post('logout', 'logout')->name('logout')->defaults('guard', $guard);
                     Route::get('dashboard', 'dashboard')->name('dashboard')->defaults('guard', $guard);
                 });

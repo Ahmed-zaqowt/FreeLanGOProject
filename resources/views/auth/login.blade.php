@@ -16,20 +16,30 @@
 
                 <form id="loginForm" method="POST" action="{{ route($guard . '.login.submit') }}">
                     @csrf
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="email"><i class="fas fa-envelope"></i> البريد الإلكتروني</label>
                         <div class="input-with-icon">
                             <i class="fas fa-envelope"></i>
-                            <input name="email" type="email" id="email" class="form-control" placeholder="ادخل بريدك الإلكتروني" required>
+                            <input name="email" type="email" id="email" value="{{ old('email') }}"
+                                class="form-control @error('email') is-invalid @enderror"
+                                placeholder="ادخل بريدك الإلكتروني" required>
                         </div>
+                        @error('email')
+                            <small class="text-danger d-block mt-1">{{ $message }}</small>
+                        @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
                         <div class="input-with-icon">
                             <i class="fas fa-lock"></i>
-                            <input name="password" type="password" id="password" class="form-control" placeholder="ادخل كلمة المرور" required>
+                            <input name="password" type="password" id="password"
+                                class="form-control @error('password') is-invalid @enderror" placeholder="ادخل كلمة المرور"
+                                required>
                         </div>
+                        @error('password')
+                            <small class="text-danger d-block mt-1">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="remember-forgot">
@@ -37,7 +47,7 @@
                             <input type="checkbox" id="remember">
                             <label for="remember">تذكرني</label>
                         </div>
-                        <a href="forgot-password.html" class="forgot-password">هل نسيت كلمة المرور؟</a>
+                        <a href="{{ route($guard . '.forget-password') }}" class="forgot-password">هل نسيت كلمة المرور؟</a>
                     </div>
 
                     <button type="submit" class="btn-login">
@@ -47,9 +57,11 @@
                     <div class="social-login">
                         <p>أو سجل الدخول باستخدام</p>
                         <div class="social-buttons">
-                            <div class="social-btn google">
-                                <i class="fab fa-google"></i>
-                            </div>
+                            <a href="{{ route($guard . '.google.login') }}">
+                                <div class="social-btn google">
+                                    <i class="fab fa-google"></i>
+                                </div>
+                            </a>
                             <div class="social-btn facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </div>
@@ -58,10 +70,12 @@
                             </div>
                         </div>
                     </div>
+                    @if ($guard != 'admin')
+                        <div class="signup-link">
+                            ليس لديك حساب؟ <a href="{{ route($guard . '.register') }}">إنشاء حساب جديد</a>
+                        </div>
+                    @endif
 
-                    <div class="signup-link">
-                        ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a>
-                    </div>
                 </form>
             </div>
         </div>

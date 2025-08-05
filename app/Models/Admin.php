@@ -12,10 +12,11 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id'
     ];
 
     protected $guard_name = 'admin';
 
-    
+
 
 }

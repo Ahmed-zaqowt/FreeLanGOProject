@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Notifications\VerifyEmailNotifcation;
 use App\Notifications\VerifyEmailNotification;
+use App\Services\SocialiteService;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -23,9 +28,10 @@ class AuthController extends Controller
     function login(Request $request)
     {
         $guard = $request->route('guard');
+
         $data = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:8']
+            'password' => ['required','string' ],
         ]);
 
         if (Auth::guard($guard)->attempt($data, $request->filled('remember'))) {
@@ -46,26 +52,38 @@ class AuthController extends Controller
         $provider = config("auth.guards.$guard.provider");
         $modelClass = config("auth.providers.$provider.model");
         $token = Str::random();
-        $user = $modelClass::create([
-            'fullname' => $request->fullname,
-            'username' => $request->fullname,
-            'phone' => '059252525',
-            'country' => 'gaza',
-            'email' => $request->email,
-            'password' => $request->password,
-            'verification_token' => $token,
-            'verification_token_sent_at' => now(),
-        ]);
 
-        $user->notify(new VerifyEmailNotification($token, $guard));
-        return redirect()->route('con');
+        DB::beginTransaction();
+
+        try {
+            $user = $modelClass::create([
+                'fullname' => $request->fullname,
+                'username' => $request->fullname,
+                'phone' => '059252525',
+                'country' => 'gaza',
+                'email' => $request->email,
+                'password' => $request->password,
+                'verification_token' => $token,
+                'verification_token_sent_at' => now(),
+            ]);
+
+            $user->notify(new VerifyEmailNotification($token, $guard));
+
+            DB::commit();
+            return redirect()->route('con');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('خطأ أثناء تسجيل المستخدم: ' . $e->getMessage());
+
+            return back()->with('error', 'حدث خطأ أثناء إرسال بريد التحقق، الرجاء المحاولة لاحقًا.');
+        }
     }
 
 
     function dashboard(Request $request)
     {
         $guard = $request->route('guard');
-        return view($guard . '.dashboard' ,compact('guard'));
+        return view($guard . '.dashboard', compact('guard'));
     }
 
     public function indexForgetPassword(Request $request)
@@ -127,7 +145,8 @@ class AuthController extends Controller
     }
 
 
-    function logout(Request $request) {
+    function logout(Request $request)
+    {
         $guard = $request->route('guard');
         Auth::guard($guard)->logout();
         return redirect()->route("$guard.login");

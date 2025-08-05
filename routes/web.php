@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\Permissions\PermissionController;
+use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -25,10 +27,33 @@ Route::get('confirm', function () {
     return 'تحقق من البريد يا شاطر ';
 })->name('con');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // dashboard admin routes :
 Route::prefix('admin/')->name('admin.')->middleware('auth:admin')->group(function () {
 
-    Route::prefix('roles/')->controller(UserController::class)->name('user.')->group(function () {
+
+    Route::prefix('permissions/')->controller(PermissionController::class)->name('permission.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/getdata', 'getdata')->name('getdata');
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/delete', 'delete')->name('delete');
+    });
+
+      Route::prefix('roles/')->controller(RoleController::class)->name('role.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getdata', 'getdata')->name('getdata');
         Route::post('/store', 'store')->name('store');

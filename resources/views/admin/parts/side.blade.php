@@ -57,6 +57,25 @@
             </ul>
         </li>
 
+
+        <li class="menu-label">@lang('الاعدادات ')</li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-users"></i>
+                </div>
+                <div class="menu-title">@lang('أدارة الصلاحيات و الادوار')</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('admin.role.index') }}">
+                        <i class="bi bi-circle"></i>
+                        @lang('الصلاحيات ')
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
         <li class="menu-label">@lang('المستخدمين')</li>
 
         <li>

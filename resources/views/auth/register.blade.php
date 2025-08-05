@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label><i class="fas fa-user-tag"></i> نوع الحساب</label>
                                 <div class="account-type">
-                                    <a href="{{ route('web.register') }}">
+                                    <a class="text-decoration-none" href="{{ route('web.register') }}">
                                         <label for="client">
                                             <i class="fas fa-briefcase"></i>
                                             <span>عميل</span>
@@ -44,7 +44,7 @@
                                         </label>
                                     </a>
 
-                                    <a href="{{ route('freelancer.register') }}">
+                                    <a class="text-decoration-none" href="{{ route('freelancer.register') }}">
                                     <label for="freelancer">
                                         <i class="fas fa-laptop-code"></i>
                                         <span>فريلانسر</span>
@@ -93,6 +93,8 @@
                                         placeholder="أعد إدخال كلمة المرور" required>
                                 </div>
                             </div>
+
+                            
                         </div>
 
                         <!-- Step 3: Professional Information -->

@@ -196,7 +196,7 @@
 @stop
 
 @section('content')
-    {{--
+
     <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -205,20 +205,39 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form_add" action="{{ route('admin.user.store') }}" id="form_add" enctype="multipart/form-data"
-                        action="" method="POST">
+                    <form class="form_add" action="{{ route('admin.permission.store') }}" id="form_add"
+                        enctype="multipart/form-data" action="" method="POST">
                         @csrf
                         <div class="mb-2 form-group">
-                            <label class="form-label">@lang('اسم المستخدم')</label>
-                            <input placeholder="@lang('اسم المستخدم')" name="name" class="form-control" type="text">
+                            <label class="form-label">@lang('اسم الصلاحية')</label>
+                            <input placeholder="@lang('اسم الصلاحية')" name="name" class="form-control" type="text">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-2 form-group">
-                            <label class="form-label">@lang('البريد الالكتروني')</label>
-                            <input id="email" placeholder="@lang('البريد الالكتروني ')" name="email" class="form-control">
+                            <label class="form-label">@lang('وصف الصلاحية ')</label>
+                            <input id="description" placeholder="@lang('وصف الصلاحية ')" name="description" class="form-control">
                             <div class="invalid-feedback"></div>
                         </div>
-
+                        <div class="mb-2 form-group">
+                            <label class="form-label">@lang(' مستحق الصلاحية')</label>
+                            <select id="email" placeholder="@lang('وصف الصلاحية ')" name="guard" class="form-control">
+                                <option disabled selected>حدد المستحق </option>
+                                @foreach ($guards as $key => $value)
+                                    <option value="{{ $value }}">{{ $key }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-2 form-group">
+                            <label class="form-label">@lang('مجموعة الصلاحية')</label>
+                            <select id="email" placeholder="@lang('وصف الصلاحية ')" name="model" class="form-control">
+                                <option disabled selected>حدد المجموعة </option>
+                                @foreach ($models as $key => $value)
+                                    <option value="{{ $value }}">{{ $key }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
 
                         <div class="modal-footer d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary"
@@ -230,7 +249,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     {{--
     <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -363,54 +382,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <form class="form_add" action="{{ route('admin.role.store') }}" id="form_add"
-                            enctype="multipart/form-data" action="" method="POST">
-                            @csrf
-                            <div class="mb-2 form-group">
-                                <label class="form-label">@lang('اسم الدور')</label>
-                                <input placeholder="@lang('اسم الدور')" name="name" class="form-control" type="text">
-                                <div class="invalid-feedback"></div>
-                            </div>
-
-                            <div class="mb-2 form-group">
-                            <label class="form-label">@lang(' مستحق الصلاحية')</label>
-                            <select id="email" placeholder="@lang('وصف الصلاحية ')" name="guard" class="form-control">
-                                <option disabled selected>حدد المستحق </option>
-                                @foreach ($guards as $key => $value)
-                                    <option value="{{ $value }}">{{ $key }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-
-                        
-                            <div class="mb-2 form-group">
-                                <label class="form-label">@lang(' الصلاحيات و الاذنونات')</label>
-                                @foreach ($permissions as $guard => $perms)
-                                    <h4>{{ __($guard) }}</h4>
-                                    @foreach ($perms as $perm)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="permissions[]"
-                                                value="{{ $perm->id }}" id="perm-{{ $perm->id }}">
-                                            <label class="form-check-lable"
-                                                for="perm-{{ $perm->id }}">{{ $perm->description }}</label>
-
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-
-                            <div class="my-3 d-flex gap-2">
-                                <button type="submit" id="search_btn" style="background-color: #7212df"
-                                    class="btn text-white col-6">
-                                    @lang('بحث')
-                                </button>
-                                <button id="clear_btn" class="btn btn-secondary col-6" type="button">
-                                    <span><i class="fa fa-undo"></i> إعادة تهيئة</span>
-                                </button>
-                            </div>
-
-                        </form>
                         {{--
                         <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">@lang('اسم المنتج')</label>
@@ -450,7 +421,15 @@
                         </div>
                     </div>
  --}}
-
+                        <div class="my-3 d-flex gap-2">
+                            <button type="submit" id="search_btn" style="background-color: #7212df"
+                                class="btn text-white col-6">
+                                @lang('بحث')
+                            </button>
+                            <button id="clear_btn" class="btn btn-secondary col-6" type="button">
+                                <span><i class="fa fa-undo"></i> إعادة تهيئة</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -463,13 +442,13 @@
                     <div class="card-header bg-transparent">
                         <div class="row g-3 align-items-center">
                             <div class="col">
-                                <h5 class="mb-0">@lang('المنتجات')</h5>
+                                <h5 class="mb-0">@lang('الصلاحيات')</h5>
                             </div>
                             <div class="col">
                                 <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
                                     <a data-bs-toggle="modal" data-bs-target="#add-modal" style="color: white"
                                         href="#" class="add-product-btn">
-                                        <i class="fas fa-plus"></i> إضافة منتج
+                                        <i class="fas fa-plus"></i> إضافة صلاحية
                                     </a>
                                 </div>
                             </div>
@@ -481,8 +460,9 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>@lang('الاسم كامل')</th>
-                                        <th>@lang('البريد الالكتروني')</th>
+                                        <th>@lang('اسم الصلاحية')</th>
+                                        <th>@lang('وصف الصلاحية')</th>
+                                        <th>@lang('مستحق الصلاحية')</th>
                                         <th>@lang('العمليات')</th>
                                     </tr>
                                 </thead>
@@ -497,6 +477,52 @@
 
 
 
-        <script></script>
+        <script>
+            var table = $('#datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('admin.permission.getdata') }}",
+                    data: function(d) {
+                        d.name = $('#search_name').val();
+                        d.price = $('#search_price').val();
+                        d.subcat = $('#search_subcat').val();
+                        d.maincat = $('#search_maincat').val();
+                        d.code = $('#search_code').val();
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: "name",
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'desc',
+                        orderable: false,
+                        searchable: false
+                    },
+                     {
+                        data: 'guard',
+                        orderable: false,
+                        searchable: false
+                    },
+
+                    {
+                        data: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
+                ],
+                language: {
+                    url: "{{ asset('datatable_custom/i18n/ar.json') }}",
+                }
+            });
+        </script>
 
     @stop

@@ -3,9 +3,11 @@
 use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Role\RoleController;
+use App\Http\Controllers\Admin\Text\TextMailController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //
+
 
 
 Route::get('/{guard}/verify-email', [EmailVerificationController::class, 'verify'])->name('verification.verify')->where('guard', 'web|freelancer');
@@ -42,8 +45,15 @@ Route::get('confirm', function () {
 
 
 // dashboard admin routes :
-Route::prefix('admin/')->name('admin.')->middleware('auth:admin')->group(function () {
+Route::prefix('admin/')->name('admin.')->middleware(['auth:admin'])->group(function () {
 
+    Route::prefix('texts/')->controller(TextMailController::class)->name('text.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/getdata', 'getdata')->name('getdata');
+        Route::post('/store', 'store')->name('store');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/delete', 'delete')->name('delete');
+    });
 
     Route::prefix('permissions/')->controller(PermissionController::class)->name('permission.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -53,7 +63,7 @@ Route::prefix('admin/')->name('admin.')->middleware('auth:admin')->group(functio
         Route::post('/delete', 'delete')->name('delete');
     });
 
-      Route::prefix('roles/')->controller(RoleController::class)->name('role.')->group(function () {
+    Route::prefix('roles/')->controller(RoleController::class)->name('role.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getdata', 'getdata')->name('getdata');
         Route::post('/store', 'store')->name('store');
@@ -61,7 +71,7 @@ Route::prefix('admin/')->name('admin.')->middleware('auth:admin')->group(functio
         Route::post('/delete', 'delete')->name('delete');
     });
 
-     Route::prefix('admins/')->controller(AdminController::class)->name('admin.')->group(function () {
+    Route::prefix('admins/')->controller(AdminController::class)->name('admin.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/getdata', 'getdata')->name('getdata');
         Route::post('/store', 'store')->name('store');

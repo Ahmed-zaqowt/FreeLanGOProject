@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proposals', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->foreignId('freelancer_id')->constrained('freelancers')->onDelete('cascade');
+            $table->ulid('id')->primary();
+            $table->foreignUlid('project_id')->constrained('projects')->onDelete('cascade');
+            $table->foreignUlid('freelancer_id')->constrained('freelancers')->onDelete('cascade');
             $table->decimal('bid_amount', 10, 2);
             $table->string('delivery_time');
             $table->text('presentation_text')->nullable();

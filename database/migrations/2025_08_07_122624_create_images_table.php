@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freelancer_skill', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('freelancer_id')->constrained('freelancers')->onDelete('cascade');
-            $table->foreignUlid('skill_id')->constrained('skills')->onDelete('cascade');
+            $table->string('url');
+           // $table->morphs('imageable'); // imageable_id (1) , imageable_type App\Models\Admin
+            $table->string('imageable_id');
+            $table->string('imageable_type');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freelancer_skills');
+        Schema::dropIfExists('images');
     }
 };

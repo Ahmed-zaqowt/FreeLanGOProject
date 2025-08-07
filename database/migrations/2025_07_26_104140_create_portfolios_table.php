@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('portfolios', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('freelancer_id')->constrained('freelancers')->onDelete('cascade');
+            $table->ulid('id')->primary();
+            $table->foreignUlid('freelancer_id')->constrained('freelancers')->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('image_cover')->nullable();

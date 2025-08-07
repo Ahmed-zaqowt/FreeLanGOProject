@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\Text\TextMailController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Models\Admin;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +34,25 @@ Route::get('confirm', function () {
 
 
 
+Route::get('file' , function ()  {
+ return view('file' );
+
+});
+Route::post('file' , function (Request $request)  {
+    // ahmed
+     $admin = Admin::query()->where('id' , '01k227ra6y23zr7xa26d95r2kq')->first();
+     $nameImage = 'FreeLnaGo_' . time() .'_'. rand() . '_' . '.' .  $request->file('file')->getClientOriginalExtension();
+     // stroage\app\public\admins\image
+     $path = $request->file('file')->storeAs('admins', $nameImage , 'public');
+     // database create
+     // in images table : url ->  \admins\imageName
+     // imageable_id -> 01k227ra6y23zr7xa26d95r2kq
+     // imageable_type -> App\Models\Admin
+     $admin->images()->create([
+       'url' => $path ,
+     ]);
+     return 'تم تخزين الصورة '  ;
+})->name('file');
 
 
 

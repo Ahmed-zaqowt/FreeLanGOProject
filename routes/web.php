@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\Freelancers\FreelancerController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Text\TextMailController;
@@ -28,12 +29,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{guard}/verify-email', [EmailVerificationController::class, 'verify'])->name('verification.verify')->where('guard', 'web|freelancer');
 
-Route::get('confirm', function () {
-    return 'تحقق من البريد يا شاطر ';
-})->name('con');
 
 
 
+/*
 Route::get('file' , function ()  {
  return view('file' );
 
@@ -53,63 +52,20 @@ Route::post('file' , function (Request $request)  {
      ]);
      return 'تم تخزين الصورة '  ;
 })->name('file');
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 // dashboard admin routes :
 Route::prefix('admin/')->name('admin.')->middleware(['auth:admin'])->group(function () {
-
-    Route::prefix('texts/')->controller(TextMailController::class)->name('text.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/getdata', 'getdata')->name('getdata');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/delete', 'delete')->name('delete');
-    });
-
-    Route::prefix('permissions/')->controller(PermissionController::class)->name('permission.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/getdata', 'getdata')->name('getdata');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/delete', 'delete')->name('delete');
-    });
-
-    Route::prefix('roles/')->controller(RoleController::class)->name('role.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/getdata', 'getdata')->name('getdata');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/delete', 'delete')->name('delete');
-    });
-
-    Route::prefix('admins/')->controller(AdminController::class)->name('admin.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/getdata', 'getdata')->name('getdata');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/delete', 'delete')->name('delete');
-    });
-
-    Route::prefix('users/')->controller(UserController::class)->name('user.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/getdata', 'getdata')->name('getdata');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/update', 'update')->name('update');
-        Route::post('/delete', 'delete')->name('delete');
-    });
+    // 5 routes : index | getdata | store | update | delete
+    Route::dataTableRoutesMacro('texts/' ,TextMailController::class , 'text' );
+    Route::dataTableRoutesMacro('permissions/' ,PermissionController::class , 'permission' );
+    Route::dataTableRoutesMacro('roles/' ,RoleController::class, 'role' );
+    Route::dataTableRoutesMacro('admins/' ,AdminController::class , 'admin' );
+    Route::dataTableRoutesMacro('users/' , UserController::class , 'user' );
+    Route::dataTableRoutesMacro('freelancers/' , FreelancerController::class , 'freelancer' );
 });
 
 // auth macro routes :
 Route::authGuard('', 'web', 'web');
 Route::authGuard('freelancer', 'freelancer', 'freelancer');
 Route::authGuard('admin', 'admin', 'admin', ['register' => false]);
+

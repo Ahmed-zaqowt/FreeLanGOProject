@@ -25,4 +25,5 @@ class Admin extends Authenticatable
     }
 
 
+
 }

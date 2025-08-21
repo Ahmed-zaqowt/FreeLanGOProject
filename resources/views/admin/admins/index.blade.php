@@ -231,7 +231,7 @@
             </div>
         </div>
     </div>
-  {{--
+
     <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -241,103 +241,32 @@
                 </div>
                 <div class="modal-body">
                     <form class="form_edit" id="form_edit" enctype="multipart/form-data"
-                        action="{{ route('dash.subcat.update') }}" method="POST">
+                        action="{{ route('admin.admin.update') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" id="id" class="form-control">
 
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('اسم المنتج ')</label>
-                            <input id="edit_name" placeholder="@lang('اسم  المنتج')" name="name" class="form-control"
-                                type="text">
+                         <div class="mb-2 form-group">
+                            <label class="form-label">@lang('اسم المستخدم')</label>
+                            <input placeholder="@lang('اسم المستخدم')" name="name" class="form-control" type="text">
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-2 form-group">
-                            <label class="form-label">@lang('وصف المنتج')</label>
-                            <textarea id="edit_desc" placeholder="@lang('وصف المنتج ')" name="description" class="form-control"></textarea>
+                            <label class="form-label">@lang('البريد الالكتروني')</label>
+                            <input id="email" placeholder="@lang('البريد الالكتروني ')" name="email" class="form-control">
                             <div class="invalid-feedback"></div>
                         </div>
+
                         <div class="mb-2 form-group">
-                            <label class="form-label">الكمية الإجمالية</label>
-                            <input id="edit_total_quantity" name="total_quantity" class="form-control" type="number"
-                                min="0" placeholder="إجمالي الكمية">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('السعر')</label>
-                            <input id="edit_price" placeholder="@lang('السعر')" name="price" class="form-control"
-                                type="number">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang(' القسم الفرعي ')</label>
-                            <select id="edit_subcat" name="maincat" class="form-control">
-                                @foreach ($subcat as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            <label class="form-label">@lang('تعيين منصب')</label>
+                            <select id="email" name="email" class="form-control">
+                                <option selected disabled> اختر المنصب </option>
+                                @foreach ($roles as $role)
+                                <option value="{{ $role->id }}"> {{ $role->description }}  </option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('الشركة المنتجة')</label>
-                            <select id="edit_company_id" name="company_id" class="form-control">
-                                <option >لا توجد شركة </option>
-                                @foreach ($company as $com)
-                                <option value="{{ $com->id }}">{{ $com->name }}</option>
-                            @endforeach
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('كود الخصم')</label>
-                            <select id="edit_coupon" name="coupon" class="form-control">
-                                <option selected disabled> اختر كود الخصم </option>
-                                <option value="false">لا يوجد اي خصومات</option>
-                                @foreach ($coupons as $co)
-                                    <option value="{{ $co->id }}">{{ $co->code }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang(' صورة المنتج الرئيسية')</label>
-                            <input id="company-logo-input" name="photo" class="form-control" type="file">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('صور المنتج')</label>
-                            <input name="album[]" multiple class="form-control" type="file">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">@lang('فيديو المنتج')</label>
-                            <input name="video" class="form-control" type="file">
-                            <div class="invalid-feedback"></div>
-                        </div>
-                        <div class="mb-2 form-group">
-                            <label class="form-label">هل المنتج يحتوي على أحجام؟</label>
-                            <input type="checkbox" id="product_sizes_checkbox" name="has_sizes">
-                        </div>
-                        <div id="product_sizes_section" style="display: none;">
-                            <div id="product_sizes_inputs">
-                                <!-- يتم إضافة الحقول ديناميكيًا هنا -->
-                            </div>
-                            <button type="button" id="add_product_size" class="btn btn-secondary btn-sm">إضافة حجم
-                                جديد</button>
-                        </div>
 
-
-                        <!-- Checkbox هل للمنتج ألوان؟ -->
-                        <div class="mb-2">
-                            <label class="form-label">هل للمنتج لون؟</label>
-                            <input type="checkbox" id="edit-has-colors-checkbox">
-                        </div>
-
-                        <!-- حاوية الألوان -->
-                        <div id="edit-color-picker-wrapper" style="display: none;">
-                            <label class="form-label">حدد الألوان:</label>
-                            <div id="edit-color-picker-container" class="color-picker"></div>
-                            <p>الألوان المختارة: <span id="edit-selected-colors"></span></p>
-                        </div>
 
 
                         <div class="modal-footer d-flex justify-content-end">
@@ -353,7 +282,7 @@
             </div>
         </div>
     </div>
---}}
+
 
     <div class="row">
         <div class="col-12">

@@ -201,11 +201,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="color: " id="exampleModalLabel">اضافة منتج جديد </h5>
+                    <h5 class="modal-title" style="color: " id="exampleModalLabel">اضافة مستقل جديد </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form_add" action="{{ route('admin.user.store') }}" id="form_add"
+                    <form class="form_add" action="{{ route('admin.freelancer.store') }}" id="form_add"
                         enctype="multipart/form-data" action="" method="POST">
                         @csrf
                         <div class="mb-2 form-group">
@@ -236,6 +236,34 @@
                             <input id="phone" placeholder="@lang(' رقم الهاتف ')" name="phone" class="form-control">
                             <div class="invalid-feedback"></div>
                         </div>
+
+                        <div class="mb-2 form-group">
+                            <label class="form-label">@lang('الخبرة')</label>
+                            <select name="experience" class="form-control">
+                                <option selected disabled>اختر مدة الخبرة</option>
+                                <option value="0-1">سنة أو أقل</option>
+                                <option value="0-1">من سنة لثلاث سنوات</option>
+                                <option value="0-1">من ثلاث سنوات لخمس سنوات</option>
+                                <option value="0-1">أكثر من خمس سنوات</option>
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="mb-3 form-group">
+                            <label class="form-label">@lang('المهارات')</label>
+                            <div class="multi-select" id="multiSelect">
+                                <div class="selected form-control">اختر المهارات...</div>
+                                <div class="options shadow-sm">
+                                    <input type="text" class="form-control form-control-sm mb-2"
+                                        placeholder=" ابحث عن مهارة...">
+                                    @foreach ($skills as $skill)
+                                        <div class="option"><input type="checkbox" name="skills[]" value="{{ $skill->id }}"> {{ $skill->title }}</div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
 
                         <div class="mb-2 form-group">
                             <label class="form-label">@lang('النبذة الشخصية  ')</label>
@@ -276,8 +304,8 @@
                         </div>
                         <div class="mb-2 form-group">
                             <label class="form-label">@lang(' اسم المستخدم ')</label>
-                            <input id="edit_username" placeholder="@lang('اسم المستخدم')" name="username" class="form-control"
-                                type="text">
+                            <input id="edit_username" placeholder="@lang('اسم المستخدم')" name="username"
+                                class="form-control" type="text">
                             <div class="invalid-feedback"></div>
                         </div>
 
@@ -346,19 +374,20 @@
                                 id="search_username">
                         </div>
 
-                         <div class="col-lg-4 col-md-6 col-12">
+                        <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">@lang('الدولة')</label>
                             <select id="search_country" class="form-control search_input_select">
-                                <option  selected value=""> اختر الدولة </option>
+                                <option selected value=""> اختر الدولة </option>
                                 @foreach ($countries as $c)
-                                    <option value="{{ $c->id }}">{{ $c->name_ar }} | "{{ $c->code }}"</option>
+                                    <option value="{{ $c->id }}">{{ $c->name_ar }} | "{{ $c->code }}"
+                                    </option>
                                 @endforeach
                             </select>
 
                         </div>
 
 
-                          <div class="col-lg-4 col-md-6 col-12">
+                        <div class="col-lg-4 col-md-6 col-12">
                             <label class="form-label">@lang('رقم الهاتف ')<span> "بدون مقدمة الدولة"</span></label>
                             <input id="search_phone" placeholder="@lang(' رقم الهاتف ')" class="form-control search_input">
                         </div>
@@ -394,7 +423,7 @@
                             <div class="d-flex align-items-center justify-content-end gap-3 cursor-pointer">
                                 <a data-bs-toggle="modal" data-bs-target="#add-modal" style="color: white"
                                     href="#" class="add-product-btn">
-                                    <i class="fas fa-plus"></i> إضافة مستخدم
+                                    <i class="fas fa-plus"></i> إضافة مستقل
                                 </a>
                             </div>
                         </div>
@@ -411,6 +440,12 @@
                                     <th>@lang('البريد الالكتروني')</th>
                                     <th>@lang('البلد')</th>
                                     <th>@lang('رقم الهاتف')</th>
+                                    <th>@lang('الخبرة')</th>
+                                    <th>@lang('التقييم')</th>
+                                    <th>@lang('المشاريع المكتملة')</th>
+                                    <th>@lang('تاريخ الانضمام ')</th>
+                                    <th>@lang('التوثيق  ')</th>
+                                    <th>@lang('رصيد النقاط  ')</th>
                                     <th>@lang('النبذة')</th>
                                     <th>@lang('العمليات')</th>
                                 </tr>
@@ -431,7 +466,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('admin.user.getdata') }}",
+                url: "{{ route('admin.freelancer.getdata') }}",
                 data: function(d) {
                     d.fullname = $('#search_name').val();
                     d.username = $('#search_username').val();
@@ -487,6 +522,60 @@
                         return data && data !== "" ? data : "-";
                     }
                 },
+
+                {
+                    data: 'experience',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+ {
+                    data: 'rating',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+                {
+                    data: 'completed_projects',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+
+                {
+                    data: 'registration_date',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+
+                {
+                    data: 'is_verified_id_card',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+
+                {
+                    data: 'points_balance',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row) {
+                        return data && data !== "" ? data : "-";
+                    }
+                },
+
+
 
 
 

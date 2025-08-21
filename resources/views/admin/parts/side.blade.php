@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{ route('admin.freelancer.index') }}">
                         <i class="bi bi-circle"></i>
                         @lang('المستقلون')
                     </a>
@@ -48,12 +48,6 @@
                         @lang('المسؤولون')
                     </a>
                 </li>
-                <li>
-                    <a href="">
-                        <i class="bi bi-circle"></i>
-                        @lang('المستقلون')
-                    </a>
-                </li>
             </ul>
         </li>
 
@@ -67,9 +61,14 @@
             </a>
             <ul>
                 <li>
-                    <a href="{{ route('admin.role.index') }}">
+                    <a href="{{ route('admin.permission.index') }}">
                         <i class="bi bi-circle"></i>
                         @lang('الصلاحيات ')
+                    </a>
+                </li><li>
+                    <a href="{{ route('admin.role.index') }}">
+                        <i class="bi bi-circle"></i>
+                        @lang('الادوار ')
                     </a>
                 </li>
             </ul>

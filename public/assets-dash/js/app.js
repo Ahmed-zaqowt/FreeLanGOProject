@@ -377,10 +377,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (checkbox.checked) checkedCount++;
             });
 
-            if (checkedCount === 0) {
-                alert("الرجاء اختيار مجال تخصص واحد على الأقل");
-                isValid = false;
-            }
         }
 
         return isValid;

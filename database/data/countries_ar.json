@@ -1,0 +1,17 @@
+[
+  { "code": "SA", "name_ar": "المملكة العربية السعودية", "phone_code": "+966" },
+  { "code": "EG", "name_ar": "مصر", "phone_code": "+20" },
+  { "code": "AE", "name_ar": "الإمارات العربية المتحدة", "phone_code": "+971" },
+  { "code": "QA", "name_ar": "قطر", "phone_code": "+974" },
+  { "code": "KW", "name_ar": "الكويت", "phone_code": "+965" },
+  { "code": "BH", "name_ar": "البحرين", "phone_code": "+973" },
+  { "code": "OM", "name_ar": "سلطنة عمان", "phone_code": "+968" },
+  { "code": "YE", "name_ar": "اليمن", "phone_code": "+967" },
+  { "code": "US", "name_ar": "الولايات المتحدة الأمريكية", "phone_code": "+1" },
+  { "code": "FR", "name_ar": "فرنسا", "phone_code": "+33" },
+  { "code": "DE", "name_ar": "ألمانيا", "phone_code": "+49" },
+  { "code": "GB", "name_ar": "المملكة المتحدة", "phone_code": "+44" },
+  { "code": "CN", "name_ar": "الصين", "phone_code": "+86" },
+  { "code": "JP", "name_ar": "اليابان", "phone_code": "+81" },
+  { "code": "IN", "name_ar": "الهند", "phone_code": "+91" }
+]

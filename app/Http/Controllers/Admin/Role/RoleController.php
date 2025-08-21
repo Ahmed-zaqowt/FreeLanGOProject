@@ -20,6 +20,7 @@ class RoleController extends Controller
 
        $role = Role::firstOrCreate([
            'name' => $request->name ,
+           'description' => $request->description ,
            'guard_name' => $request->guard ,
         ]);
 

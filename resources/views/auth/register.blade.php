@@ -1,4 +1,7 @@
 @extends('master')
+@section('title' )
+ FreelanGo || صفحة انشاء حساب جديد
+@stop
 @section('content')
     <section class="register-section">
         <div class="register-container">
@@ -6,6 +9,15 @@
                 <div class="register-header">
                     <h1>إنشاء حساب جديد</h1>
                     <p>املأ البيانات التالية لإنشاء حسابك</p>
+                     @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            @foreach ($errors->all() as $e)
+                                <li>{{ $e }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 </div>
 
                 <!-- Progress Bar -->
@@ -45,11 +57,11 @@
                                     </a>
 
                                     <a class="text-decoration-none" href="{{ route('freelancer.register') }}">
-                                    <label for="freelancer">
-                                        <i class="fas fa-laptop-code"></i>
-                                        <span>فريلانسر</span>
-                                        <small>أقدم خدماتي في مجال خبرتي</small>
-                                    </label>
+                                        <label for="freelancer">
+                                            <i class="fas fa-laptop-code"></i>
+                                            <span>فريلانسر</span>
+                                            <small>أقدم خدماتي في مجال خبرتي</small>
+                                        </label>
                                     </a>
 
                                 </div>
@@ -89,70 +101,47 @@
                                 <label for="confirmPassword"><i class="fas fa-lock"></i> تأكيد كلمة المرور</label>
                                 <div class="input-with-icon">
                                     <i class="fas fa-lock"></i>
-                                    <input name="confirmPassword" type="password" id="confirmPassword" class="form-control"
+                                    <input name="password_confirmation" type="password" id="confirmPassword" class="form-control"
                                         placeholder="أعد إدخال كلمة المرور" required>
                                 </div>
                             </div>
-
-                            
                         </div>
 
                         <!-- Step 3: Professional Information -->
                         <div class="form-step" id="step3">
-                            <div class="form-group">
-                                <h3><i class="fas fa-tags"></i> اختر مجالات تخصصك</h3>
-                                <div class="categories-grid">
-                                    <div class="category-item">
-                                        <input name="skill-webDev" type="checkbox" id="webDev">
-                                        <label for="webDev">تطوير الويب</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="mobileApp">
-                                        <label for="mobileApp">تطبيقات الموبايل</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="graphicDesign">
-                                        <label for="graphicDesign">تصميم جرافيك</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="contentWriting">
-                                        <label for="contentWriting">كتابة المحتوى</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="marketing">
-                                        <label for="marketing">التسويق الرقمي</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="translation">
-                                        <label for="translation">الترجمة</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="videoEditing">
-                                        <label for="videoEditing">مونتاج الفيديو</label>
-                                    </div>
-                                    <div class="category-item">
-                                        <input type="checkbox" id="seo">
-                                        <label for="seo">تحسين محركات البحث</label>
+                            @if ($guard == 'freelancer')
+                                <div class="form-group">
+                                    <h3><i class="fas fa-tags"></i> اختر مجالات تخصصك</h3>
+                                    <div class="categories-grid">
+                                        @foreach ($skills as $skill)
+                                            <div class="category-item">
+                                                <input name="skills[]" value="{{ $skill->id }}" type="checkbox" id="webDev">
+                                                <label for="webDev">{{ $skill->title }}</label>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            </div>
+                            @endif
+
 
                             <div class="form-group">
-                                <label for="bio"><i class="fas fa-user-edit"></i> نبذة عنك</label>
+                                <label for="bio"><i class="fas fa-user-edit"></i> نبذة عنك <span
+                                        class="text-small">(اختياري)</span></label>
                                 <textarea name="bio" id="bio" class="form-control" rows="4"
                                     placeholder="اكتب نبذة مختصرة عنك وخبراتك المهنية"></textarea>
                             </div>
-
-                            <div class="form-group">
-                                <label for="experience"><i class="fas fa-chart-line"></i> سنوات الخبرة</label>
-                                <select name="experience" id="experience" class="form-control">
-                                    <option value="">اختر عدد سنوات الخبرة</option>
-                                    <option value="0-1">أقل من سنة</option>
-                                    <option value="1-3">1-3 سنوات</option>
-                                    <option value="3-5">3-5 سنوات</option>
-                                    <option value="5+">5 سنوات فأكثر</option>
-                                </select>
-                            </div>
+                            @if ($guard == 'freelancer')
+                                <div class="form-group">
+                                    <label for="experience"><i class="fas fa-chart-line"></i> سنوات الخبرة</label>
+                                    <select name="experience" id="experience" class="form-control">
+                                        <option selected disabled>اختر عدد سنوات الخبرة</option>
+                                        <option value="0-1">أقل من سنة</option>
+                                        <option value="1-3">1-3 سنوات</option>
+                                        <option value="3-5">3-5 سنوات</option>
+                                        <option value="5+">5 سنوات فأكثر</option>
+                                    </select>
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Step 4: Identity Verification -->
@@ -216,7 +205,7 @@
                     </div>
 
                     <div class="signin-link">
-                        لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+                        لديك حساب بالفعل؟ <a href="{{ route($guard . '.login') }}">تسجيل الدخول</a>
                     </div>
                 </form>
             </div>

@@ -22,7 +22,7 @@ class EmailVerfiedByGuard
         }
 
         if(is_null($user->email_verified_at)){
-            return redirect()->route('con');
+            return redirect()->route($guard . '.' .  'confirm');
         }
         return $next($request);
     }

@@ -66,10 +66,23 @@ class RouteServiceProvider extends ServiceProvider
 
                     Route::get('/google/callback', 'handleGoogleCallback')->defaults('guard', $guard);
                 });
+
+
                 Route::middleware(['verfied.guard:' . $guard, 'authin:' . $guard])->group(function () use ($guard) {
                     Route::post('logout', 'logout')->name('logout')->defaults('guard', $guard);
                     Route::get('dashboard', 'dashboard')->name('dashboard')->defaults('guard', $guard);
+                    Route::get('confirm',  'confirm')->name('confirm');
                 });
+            });
+        });
+
+        Route::macro('dataTableRoutesMacro', function (string $prefix, $controller ,  string $name, ) {
+            Route::prefix($prefix)->controller($controller)->name($name . '.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/getdata', 'getdata')->name('getdata');
+                Route::post('/store', 'store')->name('store');
+                Route::post('/update', 'update')->name('update');
+                Route::post('/delete', 'delete')->name('delete');
             });
         });
     }

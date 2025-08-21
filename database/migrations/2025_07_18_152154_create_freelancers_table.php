@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('phone');
-            $table->string('country');
+            $table->enum('experience', ['0-1', '1-3', '3-5', '5+']);
+            $table->string('phone')->nullable();
             $table->text('bio')->nullable();
             $table->float('rating')->default(0);
             $table->unsignedInteger('completed_projects')->default(0);

@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.2.2/css/fixedColumns.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@coreui/[email protected]/dist/css/coreui.rtl.min.css"
+        integrity="sha384-NJnEZixjc3rK3cQ5BOzbn0OplWBb1xAMB0lf1hmMQ5tmTI3Eb+BVQRfYOJNHamnC" crossorigin="anonymous" />
 
     <!-- loader-->
     <link href="{{ asset('admin_assets_rtl/css/pace.min.css') }}" rel="stylesheet" />
@@ -51,6 +53,65 @@
 
 
     <style>
+        .multi-select {
+  position: relative;
+  width: 100%;
+}
+
+.multi-select .selected {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-height: 42px;
+  align-items: center;
+}
+
+.multi-select .selected span.tag {
+  background: #0d6efd;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.multi-select .selected span.tag i {
+  cursor: pointer;
+  font-style: normal;
+}
+
+.multi-select .options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  background: #fff;
+  z-index: 1000;
+  display: none;
+  padding: 8px;
+}
+
+.multi-select .option {
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.multi-select .option:hover {
+  background: #f8f9fa;
+}
+
+
         /* تنسيق حاوية السوايبر */
         .swiper-container {
             width: 100%;
@@ -529,6 +590,9 @@
     <!--end wrapper-->
 
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@coreui/[email protected]/dist/js/coreui.bundle.min.js"
+        integrity="sha384-A/PJYVqbBIxVQjEeGNq+sol2Ti2m1CIs9UqTU4QAPHMm+4V/Qzov2cZYatOxoVgf" crossorigin="anonymous">
+    </script>
 
     <!-- Bootstrap bundle JS -->
     <script src="{{ asset('admin_assets_rtl/js/bootstrap.bundle.min.js') }}"></script>
@@ -559,7 +623,10 @@
 
         $('#clear_btn').on('click', function(e) {
             e.preventDefault();
-            $('.search_input').val("").trigger("change")
+            $('.search_input').val("").trigger("change");
+            $('.search_input_select').each(function() {
+                $(this).prop('selectedIndex', 0).trigger("change");
+            });
             table.draw();
         });
 
@@ -629,10 +696,12 @@
                 data: data,
 
                 success: function(result) {
-                    $("#edit-modal").modal('hide');
-                    $('#form_edit').trigger("reset");
-                    toastr.success("تم التعديل بنجاح");
-                    table.draw()
+                    if (result.success) {
+                        toastr.success(result.success);
+                        table.draw()
+                    } else if (result.error) {
+                        toastr.error(result.error, "خطأ");
+                    }
                 },
                 error: function(data) {
                     if (data.status === 422) {
@@ -648,8 +717,12 @@
                                 '.form-group').find('.invalid-feedback').html(value[0]);
                         });
                     } else {
-                        console.log('ahmed');
+                        toastr.error("حدث خطأ غير متوقع", "خطأ");
                     }
+                },
+                complete: function() {
+                    $("#edit-modal").modal('hide');
+                    $('#form_edit').trigger("reset");
                 }
             });
         })
@@ -692,9 +765,13 @@
                                 id: id,
                                 _token: "{{ csrf_token() }}"
                             },
-                            success: function(res) {
-                                toastr.success('تم الحذف بنجاح');
-                                table.draw();
+                            success: function(result) {
+                                if (result.success) {
+                                    toastr.success(result.success);
+                                    table.draw()
+                                } else if (result.error) {
+                                    toastr.error(result.error, "خطأ");
+                                }
                             }
                         });
                     } else {
@@ -820,6 +897,55 @@
                 fileInput.val(""); // إعادة تعيين الحقل
             });
         });
+
+
+       $(function(){
+  let $multi = $("#multiSelect");
+  let $selected = $multi.find(".selected");
+  let $options = $multi.find(".options");
+
+  // فتح/إغلاق القائمة
+  $selected.on("click", function(){
+    $options.toggle();
+  });
+
+  // عند اختيار عنصر
+  $options.find("input[type=checkbox]").on("change", function(){
+    let val = $(this).val();
+    let label = $(this).parent().text().trim();
+
+    if($(this).is(":checked")){
+      $selected.append(`<span class="tag" data-val="${val}">${label} <i>×</i></span>`);
+    } else {
+      $selected.find(`span[data-val='${val}']`).remove();
+    }
+  });
+
+  // إزالة Tag عند الضغط على ×
+  $selected.on("click", "i", function(e){
+    let $tag = $(this).parent();
+    let val = $tag.data("val");
+    $options.find(`input[value='${val}']`).prop("checked", false);
+    $tag.remove();
+    e.stopPropagation();
+  });
+
+  // البحث
+  $options.find("input[type=text]").on("keyup", function(){
+    let term = $(this).val().toLowerCase();
+    $options.find(".option").each(function(){
+      let txt = $(this).text().toLowerCase();
+      $(this).toggle(txt.indexOf(term) > -1);
+    });
+  });
+
+  // إغلاق عند الضغط خارج
+  $(document).on("click", function(e){
+    if(!$(e.target).closest(".multi-select").length){
+      $options.hide();
+    }
+  });
+});
     </script>
 </body>
 

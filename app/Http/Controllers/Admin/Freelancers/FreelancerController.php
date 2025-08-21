@@ -1,39 +1,42 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Users;
+namespace App\Http\Controllers\Admin\Freelancers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Freelancer;
+use App\Models\FreelancerSkill;
+use App\Models\Skill;
 use App\Models\User;
 use App\Notifications\SendPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Str;
 
-class UserController extends Controller
+class FreelancerController extends Controller
 {
-
     public function index()
     {
-         abort_unless(auth()->guard('admin')->user()->can('user.view'), 403);
+        //abort_unless(auth()->guard('admin')->user()->can('user.view'), 403);
         $countries = Country::all();
-        return view('admin.users.index', compact('countries'));
+        $skills = Skill::all();
+        return view('admin.freelancers.index', compact('countries', 'skills'));
     }
 
     function getdata(Request $request)
     {
-        abort_unless(auth()->guard('admin')->user()->can('user.view'), 403);
-
-        $users = User::query();
+        //abort_unless(auth()->guard('admin')->user()->can('user.view'), 403);
+        $users = Freelancer::query();
         return DataTables::of($users)
-         ->filter(function ($query) use ($request) {
+            ->filter(function ($query) use ($request) {
                 if ($request->get('fullname')) {
                     $query->where('fullname', 'like', '%' . $request->get('fullname') . '%');
                 }
-                 if ($request->get('username')) {
+                if ($request->get('username')) {
                     $query->where('username', 'like', '%' . $request->get('username') . '%');
                 }
 
@@ -43,11 +46,24 @@ class UserController extends Controller
                 if ($request->get('country')) {
                     $query->where('country_id', 'like', '%' . $request->get('country') . '%');
                 }
-
             })
             ->addIndexColumn()
             ->addColumn('country', function ($qur) {
                 return $qur->country->name_ar;
+            })
+            ->addColumn('registration_date', function ($qur) {
+                 return Carbon::parse($qur->created_at)->locale('ar')->translatedFormat('j F Y');
+            })
+            ->addColumn('is_verified_id_card', function ($qur) {
+                 if($qur->email_verified_at && $qur->is_verified_id_card){
+                       return 'موثق بالكامل' ;
+                 }elseif(!$qur->email_verified_at && !$qur->is_verified_id_card){
+                        return 'غير موثق';
+                 }elseif($qur->email_verified_at){
+                        return 'موثق البريد فقط' ;
+                 }else{
+                    return 'موثق الهوية فقط';
+                 }
             })
             ->addColumn('phone', function ($qur) {
                 return '<span class="badge rounded-pill alert-success">' .  $qur->phone . '</span>
@@ -75,18 +91,18 @@ class UserController extends Controller
 
                 return $action;
             })
-            ->rawColumns(['status', 'action', 'phone'])
+            ->rawColumns(['action', 'phone'])
             ->make(true);
     }
 
     function store(Request $request)
     {
-        abort_unless(auth()->guard('admin')->user()->can('user.store'), 403);
-
-        // dd($request->all());
+        //abort_unless(auth()->guard('admin')->user()->can('user.store'), 403);
+        //dd($request->all());
         $length = 10;
         if (!is_null($request->country) && !is_null($request->phone)) {
             $country = Country::query()->where('id', $request->country)->first();
+            // dd($country);
             $length = $country->localPhoneLength();
         }
 
@@ -95,6 +111,9 @@ class UserController extends Controller
             'phone' => "nullable|string|digits:$length",
             'country' => "required|exists:countries,id",
             'email' => 'required|email',
+            'experience' => 'required',
+            'skills' => 'required|array|min:1',
+            'skills.*' => 'required|string|exists:skills,id',
             'bio' => 'nullable|string',
         ]);
 
@@ -102,18 +121,25 @@ class UserController extends Controller
         $password = Str::random();
         $guard = 'web';
         $token = Str::random();
-        $user = User::create([
+        $user = Freelancer::create([
             'fullname' => $request->fullname,
             'username' => $username,
             'email' => $request->email,
             'country_id' => $request->country,
             'phone' => $request->phone,
             'bio' => $request->bio,
+            'experience' => $request->experience,
             'password' => Hash::make($password),
             'verification_token' => $token,
             'verification_token_sent_at' => now(),
         ]);
 
+        foreach ($request->skills as $skill) {
+            FreelancerSkill::create([
+                'freelancer_id' => $user->id,
+                'skill_id' => $skill,
+            ]);
+        }
         $user->notify(new VerifyEmailNotification($token, $guard));
         $user->notify(new SendPasswordNotification($user->email, $password));
 
@@ -127,7 +153,7 @@ class UserController extends Controller
     function update(Request $request)
     {
         // dd($request->all());
-        abort_unless(auth()->guard('admin')->user()->can('user.update'), 403);
+        // abort_unless(auth()->guard('admin')->user()->can('user.update'), 403);
 
         $length = 10;
         if (!is_null($request->country) && !is_null($request->phone)) {
@@ -171,7 +197,7 @@ class UserController extends Controller
 
     function delete(Request $request)
     {
-        abort_unless(auth()->guard('admin')->user()->can('user.delete'), 403);
+        // abort_unless(auth()->guard('admin')->user()->can('user.delete'), 403);
         try {
 
             $user = User::query()->where('id', $request->id);

@@ -367,8 +367,13 @@
                             enctype="multipart/form-data" action="" method="POST">
                             @csrf
                             <div class="mb-2 form-group">
-                                <label class="form-label">@lang('اسم الدور')</label>
+                                <label class="form-label">@lang('اسم الدور')></label>
                                 <input placeholder="@lang('اسم الدور')" name="name" class="form-control" type="text">
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="mb-2 form-group">
+                                <label class="form-label">@lang('وصف الدور ')</label>
+                                <input placeholder="@lang('وصف الدور')" name="description" class="form-control" type="text">
                                 <div class="invalid-feedback"></div>
                             </div>
 
@@ -383,7 +388,7 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        
+
                             <div class="mb-2 form-group">
                                 <label class="form-label">@lang(' الصلاحيات و الاذنونات')</label>
                                 @foreach ($permissions as $guard => $perms)

@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('freelancer_skill', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('freelancer_id')->constrained('freelancers')->onDelete('cascade');
-            $table->foreignUlid('skill_id')->constrained('skills')->onDelete('cascade');
+            $table->string('code', 2)->unique();
+            $table->string('name_ar');
+            $table->string('phone_code');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('freelancer_skills');
+        Schema::dropIfExists('countries');
     }
 };

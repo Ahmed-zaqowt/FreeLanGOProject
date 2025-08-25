@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-
+/*
         $json = File::get(database_path('data/countries_ar.json'));
         $countries = json_decode($json, true);
 
@@ -94,6 +94,15 @@ class DatabaseSeeder extends Seeder
                 ['code' => $country['code']],
                 ['name_ar' => $country['name_ar'], 'phone_code' => $country['phone_code']]
             );
-        }
+        }*/
+
+
+         \App\Models\User::create([
+            'fullname' => 'Test User',
+            'username' => 'TestUser',
+            'email' => 'user@example.com',
+            'password' => Hash::make('123456789'),
+        ]);
+
     }
 }

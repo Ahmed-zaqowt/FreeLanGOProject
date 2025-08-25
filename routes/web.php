@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\Text\TextMailController;
 use App\Http\Controllers\Admin\Users\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Web\Projects\ProjectController;
+use App\Http\Controllers\Web\UserController as WebUserController;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -56,16 +58,25 @@ Route::post('file' , function (Request $request)  {
 // dashboard admin routes :
 Route::prefix('admin/')->name('admin.')->middleware(['auth:admin'])->group(function () {
     // 5 routes : index | getdata | store | update | delete
-    Route::dataTableRoutesMacro('texts/' ,TextMailController::class , 'text' );
-    Route::dataTableRoutesMacro('permissions/' ,PermissionController::class , 'permission' );
-    Route::dataTableRoutesMacro('roles/' ,RoleController::class, 'role' );
-    Route::dataTableRoutesMacro('admins/' ,AdminController::class , 'admin' );
-    Route::dataTableRoutesMacro('users/' , UserController::class , 'user' );
-    Route::dataTableRoutesMacro('freelancers/' , FreelancerController::class , 'freelancer' );
+    Route::dataTableRoutesMacro('texts/', TextMailController::class, 'text');
+    Route::dataTableRoutesMacro('permissions/', PermissionController::class, 'permission');
+    Route::dataTableRoutesMacro('roles/', RoleController::class, 'role');
+    Route::dataTableRoutesMacro('admins/', AdminController::class, 'admin');
+    Route::dataTableRoutesMacro('users/', UserController::class, 'user');
+    Route::dataTableRoutesMacro('freelancers/', FreelancerController::class, 'freelancer');
 });
+
+// clinet
+Route::name('web.')->middleware(['auth:web'])->group(function () {
+    Route::prefix('profile')->controller(WebUserController::class)->name('profile.')->group(function () {
+        Route::post('update', 'update')->name('update')->defaults('guard', 'web');
+    });
+
+    Route::dataTableRoutesMacro('projects/', ProjectController::class, 'project');
+});
+
 
 // auth macro routes :
 Route::authGuard('', 'web', 'web');
 Route::authGuard('freelancer', 'freelancer', 'freelancer');
 Route::authGuard('admin', 'admin', 'admin', ['register' => false]);
-

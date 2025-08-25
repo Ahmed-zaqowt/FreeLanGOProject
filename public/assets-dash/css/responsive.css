@@ -279,3 +279,53 @@
         transform: translateX(-50%) scale(1);
     }
 }
+
+
+/* ===== Responsive Design ===== */
+@media (max-width: 992px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-image-container {
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    .profile-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-header {
+        padding: 20px;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-item {
+        min-width: 100px;
+        padding: 12px 15px;
+    }
+
+    .stat-value {
+        font-size: 1.6rem;
+    }
+}

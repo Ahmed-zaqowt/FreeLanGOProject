@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\FreelancerSkill;
 use App\Models\Skill;
 use App\Notifications\VerifyEmailNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +42,7 @@ class AuthController extends Controller
                 return redirect()->route("{$guard}.dashboard");
             }
         } catch (Throwable $e) {
-            return 'حدث خطأ غير متوقع في عملية تسجيل الدخول';
+            return 'حدث خطأ غير متوقع في عملية تسجيل الدخول' . $e->getMessage();
         }
     }
 
@@ -121,7 +123,10 @@ class AuthController extends Controller
     function dashboard(Request $request)
     {
         $guard = $request->route('guard');
-        return view($guard . '.dashboard', compact('guard'));
+        $user = auth()->guard($guard)->user();
+        $countries = Country::all();
+        $reg_date = Carbon::parse($user->registration_data)->locale('ar')->translatedFormat('j F Y');
+        return view($guard . '.dashboard', compact('guard' , 'user' , 'reg_date' , 'countries'));
     }
 
     public function indexForgetPassword(Request $request)

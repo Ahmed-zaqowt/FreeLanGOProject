@@ -40,8 +40,7 @@
         type="text/css" />
     <link href="{{ asset('datatable_custom/css/vendor/responsive.bootstrap5.css') }}" rel="stylesheet"
         type="text/css" />
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('toastr/app-assets/vendors/css/extensions/toastr.min.css') }}">
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('code', 2)->unique(); /// EG , Us
-            $table->string('name_ar');
-            $table->string('phone_code');
-            $table->timestamps();
+        Schema::table('projects', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('countries');
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('deleted_at');
+        });
     }
 };

@@ -186,6 +186,7 @@ return [
 
     'models' => [
         'العملاء' => \App\Models\User::class,
+        'العروض' => \App\Models\Proposal::class,
     ],
 
 

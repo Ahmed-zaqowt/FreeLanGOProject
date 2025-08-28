@@ -126,7 +126,7 @@ class AuthController extends Controller
         $user = auth()->guard($guard)->user();
         $countries = Country::all();
         $reg_date = Carbon::parse($user->registration_data)->locale('ar')->translatedFormat('j F Y');
-        return view($guard . '.dashboard', compact('guard' , 'user' , 'reg_date' , 'countries'));
+        return view($guard . '.dashboard', compact('guard', 'user', 'reg_date', 'countries'));
     }
 
     public function indexForgetPassword(Request $request)

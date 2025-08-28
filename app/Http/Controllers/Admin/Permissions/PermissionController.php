@@ -56,7 +56,7 @@ class PermissionController extends Controller
     function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'regex:/^[\s\w-]*$/', 'alpha_dash', 'min:3', 'max:15'],
+            'name' => ['required', 'string', 'min:3', 'max:40'],
             'description' => 'required|string',
             'model' => 'required|string',
             'guard' => 'required|string',

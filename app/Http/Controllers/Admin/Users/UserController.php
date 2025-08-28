@@ -171,7 +171,7 @@ class UserController extends Controller
 
     function delete(Request $request)
     {
-        abort_unless(auth()->guard('admin')->user()->can('user.delete'), 403);
+                abort_unless(auth()->guard('admin')->user()->can('user.delete'), 403);
         try {
 
             $user = User::query()->where('id', $request->id);

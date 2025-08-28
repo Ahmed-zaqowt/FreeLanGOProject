@@ -11,7 +11,7 @@
                     </div>
                     <div class="modal-body">
                          <form class="form_edit" id="form_edit" enctype="multipart/form-data"
-                        action="{{ route('web.profile.update') }}" method="POST">
+                        action="{{ route('web.dashboard.profile.update') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" id="id" value="{{ $user->id }}" class="form-control">
 

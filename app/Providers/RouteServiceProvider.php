@@ -46,6 +46,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix($prefix)->controller(AuthController::class)->name($name . '.')->group(function () use ($guard, $options) {
 
                 Route::middleware('guest:' . $guard)->group(function () use ($guard, $options) {
+                    
                     Route::get('login',  'indexLogin')->name('login')->defaults('guard', $guard);
                     Route::post('login',  'login')->name('login.submit')->defaults('guard', $guard);
 

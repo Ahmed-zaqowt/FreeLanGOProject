@@ -12,4 +12,12 @@ class Project extends Model
     use HasFactory , HasUlids , SoftDeletes;
 
     protected $guarded = [] ;
+
+    function proposals() {
+        return $this->hasMany(Proposal::class);
+    }
+
+    function user() {
+       return $this->belongsTo(User::class);
+    }
 }

@@ -51,6 +51,40 @@
             </ul>
         </li>
 
+         <li class="menu-label">@lang('المشاريع')</li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-users"></i>
+                </div>
+                <div class="menu-title">@lang('أدارة مشاريع المنصة')</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('admin.project.index') }}">
+                        <i class="bi bi-circle"></i>
+                        @lang('المشاريع')
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+         <li class="menu-label">@lang('المهارات')</li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="lni lni-users"></i>
+                </div>
+                <div class="menu-title">@lang('أدارة مهارات المنصة')</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('admin.skill.index') }}">
+                        <i class="bi bi-circle"></i>
+                        @lang('المهارات')
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
         <li class="menu-label">@lang('الاعدادات ')</li>
         <li>

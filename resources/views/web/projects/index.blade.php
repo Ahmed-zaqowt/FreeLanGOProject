@@ -12,7 +12,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form_add" action="{{ route('web.project.store') }}" id="form_add"
+                    <form class="form_add" action="{{ route('web.dashboard.project.store') }}" id="form_add"
                         enctype="multipart/form-data" action="" method="POST">
                         @csrf
                         <div class="mb-2 form-group">
@@ -62,7 +62,7 @@
                     </div>
                     <div class="modal-body">
                          <form class="form_edit" id="form_edit" enctype="multipart/form-data"
-                        action="{{ route('web.project.update') }}" method="POST">
+                        action="{{ route('web.dashboard.project.update') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" id="id" class="form-control">
 
@@ -156,7 +156,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('web.project.getdata') }}",
+                url: "{{ route('web.dashboard.project.getdata') }}",
                 data: function(d) {
                     d.fullname = $('#search_name').val();
                     d.username = $('#search_username').val();

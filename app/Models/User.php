@@ -46,4 +46,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Country::class);
     }
+
+      public function projects()
+    {
+        return $this->hasMany(Project::class, 'client_id');
+    }
+
+   
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class, 'freelancer_id');
+    }
 }

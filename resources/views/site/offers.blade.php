@@ -31,38 +31,36 @@
                     <h2>إضافة عرض جديد</h2>
                 </div>
 
-                <form id="bidForm" class="p-4 border rounded shadow-sm bg-light">
+                <form method="POST" action="{{ route('freelancer.project.proposal.store') }}" id="bidForm" class="p-4 border rounded shadow-sm bg-light">
+                    @csrf
+                    <input type="hidden" name="project_id" value="{{ $project->id }}" >
                     <div class="row mb-3">
-                        <!-- قيمة العرض -->
                         <div class="col-md-6 mb-3">
                             <label for="bidAmount" class="form-label">
                                 <i class="fas fa-money-bill-wave"></i> قيمة العرض ($)
                             </label>
-                            <input type="number" class="form-control" id="bidAmount" placeholder="أدخل قيمة العرض"
+                            <input type="number" name="bid_amount" class="form-control" id="bidAmount" placeholder="أدخل قيمة العرض"
                                 min="100" max="1000" required>
                         </div>
 
-                        <!-- المدة -->
                         <div class="col-md-6 mb-3">
                             <label for="bidDuration" class="form-label">
                                 <i class="fas fa-clock"></i> المدة المتوقعة (أيام)
                             </label>
-                            <input type="number" class="form-control" id="bidDuration" placeholder="عدد الأيام اللازمة"
+                            <input type="number" name="delivery_time" class="form-control" id="bidDuration" placeholder="عدد الأيام اللازمة"
                                 min="1" max="30" required>
                         </div>
                     </div>
 
-                    <!-- رسالة العرض -->
                     <div class="mb-3">
                         <label for="bidMessage" class="form-label">
                             <i class="fas fa-comment-alt"></i> رسالة العرض
                         </label>
-                        <textarea class="form-control" id="bidMessage" rows="4"
+                        <textarea class="form-control" name="presentation_text" id="bidMessage" rows="4"
                             placeholder="صف عرضك، خبراتك السابقة، ولماذا أنت الأنسب لهذا المشروع..." required></textarea>
                     </div>
 
                     <div class="row mb-3">
-                        <!-- عدد التعديلات -->
                         <div class="col-md-6 mb-3">
                             <label for="revisions" class="form-label">
                                 <i class="fas fa-sync-alt"></i> عدد التعديلات المتاحة
@@ -74,11 +72,7 @@
                                 <option value="unlimited">غير محدود</option>
                             </select>
                         </div>
-
-
                     </div>
-
-                    <!-- زر الإرسال -->
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="fas fa-paper-plane"></i> تقديم العرض
                     </button>
@@ -101,6 +95,7 @@
                             </select>
                         </div>
                     </div>
+
                     @foreach ($project->proposals as $pro)
                         <div class="bids-container">
                             <div class="bid-card">

@@ -7,15 +7,14 @@ use App\Http\Controllers\Admin\Projects\ProjectController as ProjectsProjectCont
 use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\Admin\Text\TextMailController;
 use App\Http\Controllers\Admin\Users\UserController;
-use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Site\Projects\ProjectController as SiteProjectsProjectController;
 use App\Http\Controllers\Web\Projects\ProjectController;
 use App\Http\Controllers\Web\UserController as WebUserController;
-use App\Models\Admin;
-use App\Models\Project;
+use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,6 +60,8 @@ Route::post('file' , function (Request $request)  {
 
 
 
+
+
 // auth macro routes :
 Route::authGuard('', 'web', 'web');
 Route::authGuard('freelancer', 'freelancer', 'freelancer');
@@ -80,11 +81,13 @@ Route::prefix('admin/')->name('admin.')->middleware(['auth:admin'])->group(funct
     Route::dataTableRoutesMacro('skills/', ProjectsProjectController::class, 'skill');
 });
 
+//
 Route::prefix('freelancer/')->name('freelancer.')->middleware(['auth:freelancer'])->group(function () {
 
     Route::controller(SiteProjectsProjectController::class)->group(function () {
         Route::get('projects', 'index')->name('index')->defaults('guard', 'freelancer');
         Route::get('project/{id}',  'projectDetails')->name('offer')->defaults('guard', 'freelancer');
+        Route::post('project/proposal/store' , 'storeProposal')->name('project.proposal.store');
     });
 });
 

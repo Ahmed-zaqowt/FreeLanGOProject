@@ -99,6 +99,7 @@ Route::name('web.')->middleware(['auth:web'])->group(function () {
         });
         Route::dataTableRoutesMacro('projects/', ProjectController::class, 'project');
     });
+    
 
     Route::controller(SiteProjectsProjectController::class)->group(function () {
         Route::get('projects', 'index')->name('index')->defaults('guard', 'web');

@@ -3,8 +3,10 @@
 namespace App\Notifications;
 
 use App\Models\Proposal;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -27,7 +29,7 @@ class NewProposalNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return [ 'database', 'broadcast'];
     }
 
     /**
@@ -60,19 +62,22 @@ class NewProposalNotification extends Notification
         ];
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+    public function toBroadcast(object $notifiable)
     {
-        return [
+        return new BroadcastMessage([
             'proposal_id' => $this->proposal->id,
             'project_id' => $this->proposal->project->id,
             'project_title' => $this->proposal->project->title,
             'freelancer_id' => $this->proposal->freelancer_id,
             'freelancer_name' => $this->proposal->freelancer->fullname,
-        ];
+            'bid_amount' => $this->proposal->bid_amount,
+            'delivery_time' => $this->proposal->delivery_time,
+            'msg' => $this->proposal->presentation_text
+        ]);
+    }
+
+   public function broadcastOn()
+    {
+        return new PrivateChannel('App.Models.User.' . $this->proposal->project->user_id);
     }
 }

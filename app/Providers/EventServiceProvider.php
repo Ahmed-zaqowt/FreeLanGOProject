@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\ProposalCreated;
 use App\Events\TextRequested;
 use App\Listeners\DispatchTextMailNotification;
+use App\Listeners\SendNewProposalNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,8 +24,14 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         TextRequested::class => [
-                DispatchTextMailNotification::class , 
+            DispatchTextMailNotification::class,
+        ],
+
+        ProposalCreated::class => [
+            SendNewProposalNotification::class,
         ]
+
+
     ];
 
     /**

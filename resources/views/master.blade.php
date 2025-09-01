@@ -99,7 +99,7 @@
     <script src="{{ asset('datatable_custom/js/vendor/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('datatable_custom/js/vendor/dataTables.responsive.min.js') }}"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
     @yield('js')
@@ -150,7 +150,7 @@
                 },
             });
         })
-         $('#form_add').on('submit', function(event) {
+        $('#form_add').on('submit', function(event) {
 
             event.preventDefault();
             var data = new FormData(this);
@@ -249,6 +249,16 @@
                 });
             });
         });
+
+
+
+
+        window.Laravel = {
+            csrfToken: '{{ csrf_token() }}',
+            userId: {{ auth()->guard('web')->check() ? auth()->guard('web')->id() : 'null' }}
+        };
+
+
 
     </script>
 </body>

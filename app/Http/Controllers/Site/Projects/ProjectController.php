@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Site\Projects;
 
+use App\Events\MyEvent;
+use App\Events\ProposalCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Proposal;
